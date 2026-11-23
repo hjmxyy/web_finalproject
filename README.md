@@ -1,2 +1,2 @@
-# web_finalproject
+# Technology for Web Development_finalproject
 wikipedia
