@@ -1,0 +1,8 @@
+.DS_Store
+
+# Temporary preview page for the footer - delete it before submission
+footer-preview.php
+
+# Editor and system files
+.vscode/
+*.log
