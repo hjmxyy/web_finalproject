@@ -1,0 +1,217 @@
+/* =============================================================================
+ * style.css - site-wide styles (currently only the shared footer band)
+ *
+ * Group number  : Group 4
+ * Group members : SHI Hau Yan (25532012), Hui Ka Tung (25553258),
+ *                 Huang Kin Ming (25531056)
+ * Date          : 25 November 2026
+ * Assignment    : Final Project Part II - Technology for Web Development
+ *
+ * What it does / why:
+ *   Holds the CSS for the shared footer in footer.php. Every rule is scoped
+ *   under .wk-footer (or the :root tokens), so page styles can be added to this
+ *   file later without touching the footer by accident.
+ *   Sizes, colours and spacing are measured from the reference footer
+ *   (en.wiktionary.org), so the band matches the original at a glance.
+ * =============================================================================
+ */
+
+/* -----------------------------------------------------------------------------
+ * Site typography: the reference site renders everything in Arial, so the same
+ * face is set for the whole site - that keeps our pages and the footer
+ * typographically identical instead of mixing two sans-serif faces.
+ * -------------------------------------------------------------------------- */
+body {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+/* -----------------------------------------------------------------------------
+ * Tokens taken from the reference footer.
+ * If Part I fixed a Colorhunt palette, replace the two link values and the
+ * footer text colour here - everything below inherits them.
+ * -------------------------------------------------------------------------- */
+:root {
+    --wk-link: #3366cc;         /* reference link blue */
+    --wk-link-hover: #2a4b8d;   /* darker blue on hover */
+    --wk-footer-bg: #ffffff;    /* the band is white, not grey */
+    --wk-footer-rule: #a2a9b1;  /* full-width rule under the page content */
+    --wk-footer-text: #202122;  /* near-black body text */
+    --wk-btn-bg: #f8f9fa;       /* grey fill of the two footer buttons */
+    --wk-btn-border: #72777d;   /* their 1px border */
+}
+
+/* -----------------------------------------------------------------------------
+ * .wk-shell - page-width wrapper shared by the footer and the pages.
+ * The reference site runs full width with a fixed gutter, not a centred narrow
+ * column, so the content keeps ~44px margins on wide screens, shrinking to 16px
+ * on phones. Later pages should use this same wrapper so everything lines up
+ * with the footer.
+ * -------------------------------------------------------------------------- */
+.wk-shell {
+    width: 100%;
+    /* border-box keeps the 16-44px gutter inside the 100% width, so the band
+       never creates a horizontal scrollbar even if Bootstrap is missing. */
+    box-sizing: border-box;
+    padding-inline: clamp(1rem, 3vw, 2.75rem);
+}
+
+/* -----------------------------------------------------------------------------
+ * The band: white, one hairline rule on top, 12px text (the size the reference
+ * footer uses), generous vertical padding so it reads as metadata below the
+ * article rather than as page content.
+ * -------------------------------------------------------------------------- */
+.wk-footer {
+    background-color: var(--wk-footer-bg);
+    border-top: 1px solid var(--wk-footer-rule);
+    color: var(--wk-footer-text);
+    /* Arial, exactly as the reference footer: measured at 12px its licence line
+       is the same width as the original (1044px vs 1043px). The local default
+       sans-serif (PingFang SC here) renders Latin text about 6% wider. */
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 0.75rem;     /* 12px */
+    line-height: 1.66;      /* 20px, same rhythm as the reference */
+    padding: 1.15rem 0 2.25rem;   /* extra space under the buttons, as on the reference */
+}
+
+/* -----------------------------------------------------------------------------
+ * 1. footer-info: the last-edit line and the licence sentence.
+ * The three lists in this footer carry Bootstrap's .list-unstyled utility (markup),
+ * which removes the bullets and left padding; only the margin Bootstrap leaves
+ * under a list has to be cleared here.
+ * -------------------------------------------------------------------------- */
+.wk-footer__info {
+    margin: 0;
+}
+
+.wk-footer__lastedit {
+    margin-bottom: 0.55rem;
+}
+
+.wk-footer__license {
+    overflow-wrap: break-word;  /* long words wrap instead of widening the page */
+}
+
+/* Licence links share the link colour and the hover colour of the legal row. */
+.wk-footer__license a {
+    color: var(--wk-link);
+    text-decoration: none;
+}
+
+.wk-footer__license a:hover,
+.wk-footer__license a:focus {
+    color: var(--wk-link-hover);
+    text-decoration: underline;
+}
+
+/* -----------------------------------------------------------------------------
+ * Shared link rows (legal places): one flexible line that wraps,
+ * so tablet and mobile never get a horizontal scrollbar from a long list.
+ * 0.85rem column gap matches the spacing measured on the reference footer.
+ * -------------------------------------------------------------------------- */
+.wk-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.85rem;
+    margin: 0;
+}
+
+.wk-footer__links a {
+    color: var(--wk-link);
+    text-decoration: none;
+    overflow-wrap: break-word;
+}
+
+.wk-footer__links a:hover,
+.wk-footer__links a:focus {
+    color: var(--wk-link-hover);
+    text-decoration: underline;
+}
+
+/* Keyboard focus ring for every footer link, kept subtle so it does not change
+   the look; applies to the licence links and the badges as well. */
+.wk-footer a:focus-visible {
+    outline: 1px dotted var(--wk-footer-text);
+    outline-offset: 2px;
+}
+
+/* -----------------------------------------------------------------------------
+ * 2. footer-places: the legal links, left side of the bottom row.
+ * 3. footer-icons : the two badges, right side of the same row.
+ * Together they reproduce the arrangement of the reference footer.
+ * -------------------------------------------------------------------------- */
+.wk-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;            /* buttons drop below the links on narrow screens */
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem 1.5rem;
+    margin-top: 0.6rem;
+}
+
+/* flex-basis + min-width:0 lets the legal row shrink and wrap instead of
+   pushing the buttons off the edge. */
+.wk-footer__places {
+    flex: 1 1 22rem;
+    min-width: 0;
+}
+
+/* Button group: Wikimedia Foundation, then Powered by MediaWiki. */
+.wk-footer__icons {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+}
+
+/* Grey bordered "button" boxes (MediaWiki "Codex" buttons) around the two logos:
+   44px tall with 6px side padding, which is what the reference footer renders.
+   The box itself is a plain list item; the clickable part is the link inside. */
+.wk-footer__icons > li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.75rem;
+    padding: 0 0.45rem;
+    background-color: var(--wk-btn-bg);
+    border: 1px solid var(--wk-btn-border);
+    border-radius: 2px;
+}
+
+/* Both badges are wrapped in a link: block + zero line-height keeps the image
+   off the text baseline, and the text settings below stop an image that fails
+   to load from showing as blue underlined alt text. */
+.wk-footer__icons a {
+    display: block;
+    line-height: 0;
+    color: inherit;
+    text-decoration: none;
+}
+
+.wk-footer__icons img {
+    display: block;
+    max-width: 100%;
+    height: auto;               /* keeps both logos at their real proportions */
+}
+
+/* -----------------------------------------------------------------------------
+ * Mobile (~375px-576px): tighten the gaps, stack the buttons under the legal
+ * links and keep every row inside the viewport.
+ * -------------------------------------------------------------------------- */
+@media (max-width: 575.98px) {
+    .wk-footer {
+        padding: 0.9rem 0 1rem;
+    }
+
+    .wk-footer__links {
+        gap: 0.15rem 0.75rem;
+    }
+
+    .wk-footer__bottom {
+        display: block;
+    }
+
+    .wk-footer__icons {
+        margin-top: 0.6rem;
+    }
+}
